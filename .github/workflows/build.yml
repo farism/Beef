@@ -43,24 +43,19 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     steps:
-      # - name: Checkout Code
-      #   uses: actions/checkout@v4
-      # - name: Install Deps
-      #   run: |
-      #     brew update
-      #     brew install llvm@22
-      #     echo "$(brew --prefix llvm@22)/bin" >> $GITHUB_PATH
-      # - name: Build
-      #   run: |
-      #     bin/build.sh
-      #     mkdir artifacts
-      #     cd IDE/dist
-      #     cp BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a libBeefySysLib.a libBeefySysLib_d.a libIDEHelper.a libIDEHelper_d.a ../../artifacts
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Install Deps
+        run: |
+          brew update
+          brew install llvm@22
+          echo "$(brew --prefix llvm@22)/bin" >> $GITHUB_PATH
       - name: Build
         run: |
+          bin/build.sh
           mkdir artifacts
-          cd artifacts
-          touch test.txt
+          cd IDE/dist
+          cp BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a libBeefySysLib.a libBeefySysLib_d.a libIDEHelper.a libIDEHelper_d.a ../../artifacts
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
