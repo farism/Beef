@@ -21,7 +21,7 @@ jobs:
         run: |
           bin/build.bat
           cd IDE/dist
-          Compress-Archive -Path BeefBuild, BeefBuild_d.exe, Beef042RT64.dll, Beef042RT64_d.dll -DestinationPath ..\..\${{ matrix.os }}.zip
+          Compress-Archive -Path BeefBuild.exe, BeefBuild_d.exe, Beef042RT64.dll, Beef042RT64_d.dll, Beef042Dbg64.dll, Beef042Dbg64_d.dll, Beef042RT32.dll, Beef042RT32_d.dll, Beef042Dbg32.dll, Beef042Dbg32_d.dll -DestinationPath ..\..\${{ matrix.os }}.zip
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
