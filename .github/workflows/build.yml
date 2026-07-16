@@ -92,6 +92,8 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
+      - name: echo
+        run: ls -la
       - name: Upload archives to release
         uses: softprops/action-gh-release@v3
         with:
