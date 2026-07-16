@@ -1,5 +1,8 @@
 name: Build
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - '*'
 jobs:
   # build-windows:
   #   name: Build on Windows
@@ -12,6 +15,7 @@ jobs:
   #   steps:
   #     - uses: actions/checkout@v5
   #     - run: bin/build.bat
+
   # build-linux:
   #   name: Build on Linux
   #   strategy:
@@ -28,12 +32,13 @@ jobs:
   #         sudo ./llvm.sh 22
   #         sudo apt-get install -y llvm-22-dev
   #     - run: bin/build.sh
+
   build-macos:
     name: Build on macOS
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, macos-15-intel]
+        os: [macos-latest]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     steps:
@@ -53,6 +58,24 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}-artifacts
+          name: ${{ matrix.os }}
           path: artifacts
           retention-days: 7
+
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+    needs: [build-macos]
+    steps:
+      - name: Download Artifacts
+          uses: actions/download-artifact@v4
+      - name: Upload binaries to release
+          uses: svenstaro/upload-release-action@v2
+          with:
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+            file: macos-latest
+            asset_name: macos-latest
+            tag: ${{ github.ref }}
+            overwrite: true
+            body: "Nightly"
+
