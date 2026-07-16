@@ -19,7 +19,7 @@ jobs:
       - name: Build
         shell: pwsh
         run: |
-          # bin/build.bat
+          bin/build.bat
           cd IDE/dist
           Compress-Archive -Path BeefBuild, BeefBuild_d.exe, Beef042RT64.dll, Beef042RT64_d.dll -DestinationPath ..\..\${{ matrix.os }}.zip
       - name: Upload Artifacts
