@@ -20,7 +20,6 @@ PostBuildCmds = ["CopyToDependents(\"$(ProjectDir)/dist/BeefySysLib64_d.dll\")",
 OtherLinkFlags = "$(LinkFlags) \"$(ProjectDir)/dist/libBeefySysLib_d.a\""
 CLibType = "Static"
 BeefLibType = "Static"
-PostBuildCmds = ["CopyToDependents(\"$(ProjectDir)/dist/libBeefySysLib_d.a\")"]
 
 [Configs.Release.Win32]
 OtherLinkFlags = ""
@@ -34,7 +33,6 @@ PostBuildCmds = ["CopyToDependents(\"$(ProjectDir)/dist/BeefySysLib64.dll\")", "
 OtherLinkFlags = "$(LinkFlags) \"$(ProjectDir)/dist/libBeefySysLib.a\""
 CLibType = "Static"
 BeefLibType = "Static"
-PostBuildCmds = ["CopyToDependents(\"$(ProjectDir)/dist/libBeefySysLib.a\")"]
 
 [Configs.Paranoid.Win32]
 CLibType = "Static"

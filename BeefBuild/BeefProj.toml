@@ -37,9 +37,8 @@ PreprocessorMacros = ["DEBUG", "CLI"]
 [Configs.Debug.Linux64]
 TargetDirectory = "$(WorkspaceDir)/../IDE/dist"
 TargetName = "$(ProjectName)_d"
-OtherLinkFlags = "$(LinkFlags) ./libIDEHelper_d.a ./libBeefySysLib_d.a ./libhunspell.so $(Var IDEHelperLibs) -Wl,-rpath -Wl,$ORIGIN"
+OtherLinkFlags = "$(LinkFlags) ./libIDEHelper_d.a ./libBeefySysLib_d.a ./libhunspell.so -lLLVM-22 /usr/lib/llvm-22/lib/liblldb-22.so -lbacktrace -Wl,-rpath -Wl,$ORIGIN"
 CLibType = "Dynamic"
-PreBuildCmds = ["ReadFile(\"$(WorkspaceDir)/../IDE/dist/IDEHelper_libs_d.txt\", \"IDEHelperLibs\")"]
 DebugCommandArguments = "-proddir=..\\ -config=Debug -platform=Linux64"
 DebugWorkingDirectory = "$(WorkspaceDir)/../IDE/dist"
 PreprocessorMacros = ["DEBUG", "CLI"]
@@ -55,9 +54,8 @@ PreprocessorMacros = ["CLI"]
 
 [Configs.Release.Linux64]
 TargetDirectory = "$(WorkspaceDir)/../IDE/dist"
-OtherLinkFlags = "$(LinkFlags) ./libIDEHelper.a ./libBeefySysLib.a ./libhunspell.so $(Var IDEHelperLibs) -Wl,-rpath -Wl,$ORIGIN"
+OtherLinkFlags = "$(LinkFlags) ./libIDEHelper.a ./libBeefySysLib.a ./libhunspell.so -lLLVM-22 /usr/lib/llvm-22/lib/liblldb-22.so -lbacktrace -Wl,-rpath -Wl,$ORIGIN"
 CLibType = "Dynamic"
-PreBuildCmds = ["ReadFile(\"$(WorkspaceDir)/../IDE/dist/IDEHelper_libs.txt\", \"IDEHelperLibs\")"]
 DebugCommandArguments = "-proddir=..\\ -config=Debug -platform=Linux64"
 DebugWorkingDirectory = "$(WorkspaceDir)/../IDE/dist"
 PreprocessorMacros = ["CLI"]

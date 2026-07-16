@@ -78,13 +78,13 @@ if [ $LLVM_FOUND == 0 ]; then
 	exit 1
 fi
 
-if [ ! -f ../BeefySysLib/third_party/libffi/Makefile ]; then
-	echo Building libffi...
-	cd ../BeefySysLib/third_party/libffi
-	./configure --disable-docs
-	make
-	cd $SCRIPTPATH
-fi
+# if [ ! -f ../BeefySysLib/third_party/libffi/Makefile ]; then
+# 	echo Building libffi...
+# 	cd ../BeefySysLib/third_party/libffi
+# 	./configure --disable-docs
+# 	make
+# 	cd $SCRIPTPATH
+# fi
 
 ### LIBS ###
 
