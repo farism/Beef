@@ -93,7 +93,6 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
-      - name 
       - name: Upload archives to release
         uses: softprops/action-gh-release@v3
         with:
