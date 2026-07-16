@@ -75,15 +75,12 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
-        with:
-          path: ./artifacts
-      - name: list
+      - name: Create archives
         run: |
-          ls -la
-          cd artifacts
-          ls -la
+          zip -r macos-latest.zip ./macos-latest
       - name: Upload binaries to release
         uses: softprops/action-gh-release@v3
         with:
-          files: ./artifacts/*
+          files: |
+            macos-latest.zip
 
