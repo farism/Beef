@@ -95,7 +95,7 @@ jobs:
         run: |
 
           ls -la
-          cd macos-latest
+          cd artifact
           ls -la
       - name: Upload archives to release
         uses: softprops/action-gh-release@v3
