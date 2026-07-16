@@ -76,7 +76,6 @@ jobs:
       #     zip ../../${{ matrix.os }}.zip BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a
       - name: Build
         run: |
-          bin/build.sh
           cd IDE/dist
           zip ../../${{ matrix.os }}.zip notes.txt
       - name: Upload Artifacts
