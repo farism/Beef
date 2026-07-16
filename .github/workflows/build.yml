@@ -39,11 +39,13 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Build
+      - name: Install Deps
         run: |
           brew update
           brew install llvm@22
           echo "$(brew --prefix llvm@22)/bin" >> $GITHUB_PATH
+      - name: Build
+        run: |
           bin/build.sh
           mkdir artifacts
           cp IDE/dist/BeefBuild_d artifacts
