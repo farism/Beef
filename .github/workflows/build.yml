@@ -73,7 +73,7 @@ jobs:
         run: |
           bin/build.sh
           cd IDE/dist
-          zip BeefBuild BeefBuild_d ../../${{ matrix.os }}.zip
+          zip ../../${{ matrix.os }}.zip BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
