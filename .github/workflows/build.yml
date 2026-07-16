@@ -14,8 +14,14 @@ jobs:
   #   runs-on: ${{ matrix.os }}
   #   timeout-minutes: 60
   #   steps:
-  #     - uses: actions/checkout@v5
-  #     - run: bin/build.bat
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v5
+  #     - name: Build
+  #       run: |
+  #         bin/build.bat
+  #         mkdir artifacts
+  #         cd IDE/dist
+  #         cp BeefBuild BeefBuild_d.exe BeefRT.lib BeefRT_d.lib BeefySysLib.lib BeefySysLib_d.lib IDEHelper.lib IDEHelper_d.lib ../../artifacts
 
   # build-linux:
   #   name: Build on Linux
@@ -26,20 +32,33 @@ jobs:
   #   runs-on: ${{ matrix.os }}
   #   timeout-minutes: 60
   #   steps:
-  #     - uses: actions/checkout@v5
-  #     - run: |
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v5
+  #     - name: Install Deps
+  #       run: |
   #         wget https://apt.llvm.org/llvm.sh
   #         chmod +x llvm.sh
   #         sudo ./llvm.sh 22
   #         sudo apt-get install -y llvm-22-dev
-  #     - run: bin/build.sh
+  #     - name: Build
+  #       run: |
+  #         bin/build.sh
+  #         mkdir artifacts
+  #         cd IDE/dist
+  #         cp BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a libBeefySysLib.a libBeefySysLib_d.a libIDEHelper.a libIDEHelper_d.a ../../artifacts
+  #     - name: Upload Artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: ${{ matrix.os }}
+  #         path: artifacts
+  #         retention-days: 7
 
   build-macos:
     name: Build on macOS
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest]
+        os: [macos-latest, macos-15-intel]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     steps:
@@ -53,9 +72,8 @@ jobs:
       - name: Build
         run: |
           bin/build.sh
-          mkdir artifacts
           cd IDE/dist
-          cp BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a libBeefySysLib.a libBeefySysLib_d.a libIDEHelper.a libIDEHelper_d.a ../../artifacts
+          zip BeefBuild BeefBuild_d ../../${{ matrix.os }}.zip
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -70,12 +88,10 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
-      - name: Create archives
-        run: |
-          cd macos-latest && zip -r ../macos-latest.zip .
-      - name: Upload binaries to release
+      - name: Upload archives to release
         uses: softprops/action-gh-release@v3
         with:
           files: |
             macos-latest.zip
+            macos-15-intel.zip
 
