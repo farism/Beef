@@ -48,7 +48,8 @@ jobs:
         run: |
           bin/build.sh
           mkdir artifacts
-          cp IDE/dist/BeefBuild_d artifacts
+          cd IDE/dist
+          cp BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a libBeefySysLib.a libBeefySysLib_d.a libIDEHelper.a libIDEHelper_d.a ../../artifacts
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
