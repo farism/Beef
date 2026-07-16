@@ -17,11 +17,12 @@ jobs:
   #     - name: Checkout Code
   #       uses: actions/checkout@v5
   #     - name: Build
+  #       shell: pwsh
   #       run: |
   #         bin/build.bat
   #         mkdir artifacts
   #         cd IDE/dist
-  #         cp BeefBuild BeefBuild_d.exe BeefRT.lib BeefRT_d.lib BeefySysLib.lib BeefySysLib_d.lib IDEHelper.lib IDEHelper_d.lib ../../artifacts
+  #         cp BeefBuild BeefBuild_d.exe Beef042RT64.dll Beef042RT64_d.dll ../../artifacts
 
   # build-linux:
   #   name: Build on Linux
@@ -44,8 +45,7 @@ jobs:
   #       run: |
   #         bin/build.sh
   #         mkdir artifacts
-  #         cd IDE/dist
-  #         cp BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a libBeefySysLib.a libBeefySysLib_d.a libIDEHelper.a libIDEHelper_d.a ../../artifacts
+  #         zip ../../${{ matrix.os }}.zip BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a
   #     - name: Upload Artifacts
   #       uses: actions/upload-artifact@v4
   #       with:
@@ -64,21 +64,26 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Install Deps
-        run: |
-          brew update
-          brew install llvm@22
-          echo "$(brew --prefix llvm@22)/bin" >> $GITHUB_PATH
+      # - name: Install Deps
+      #   run: |
+      #     brew update
+      #     brew install llvm@22
+      #     echo "$(brew --prefix llvm@22)/bin" >> $GITHUB_PATH
+      # - name: Build
+      #   run: |
+      #     bin/build.sh
+      #     cd IDE/dist
+      #     zip ../../${{ matrix.os }}.zip BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a
       - name: Build
         run: |
           bin/build.sh
           cd IDE/dist
-          zip ../../${{ matrix.os }}.zip BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a
+          zip ../../${{ matrix.os }}.zip notes.txt
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}
-          path: artifacts
+          path: ${{ matrix.os }}.zip
           retention-days: 7
 
   release:
@@ -88,6 +93,7 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
+      - name 
       - name: Upload archives to release
         uses: softprops/action-gh-release@v3
         with:
