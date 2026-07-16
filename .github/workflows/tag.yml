@@ -21,8 +21,6 @@ jobs:
         run: echo "TAG_NAME=nightly-$(date +'%m-%d-%Y')" >> $GITHUB_ENV
 
       - name: Create Git Tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
           git tag ${{ env.TAG_NAME }}
           git push origin ${{ env.TAG_NAME }}
