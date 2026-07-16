@@ -5,24 +5,26 @@ on:
       - '*'
 
 jobs:
-  # build-windows:
-  #   name: Build on Windows
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       os: [windows-latest, windows-11-arm]
-  #   runs-on: ${{ matrix.os }}
-  #   timeout-minutes: 60
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v5
-  #     - name: Build
-  #       shell: pwsh
-  #       run: |
-  #         bin/build.bat
-  #         mkdir artifacts
-  #         cd IDE/dist
-  #         cp BeefBuild BeefBuild_d.exe Beef042RT64.dll Beef042RT64_d.dll ../../artifacts
+  build-windows:
+    name: Build on Windows
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, windows-11-arm]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+      - name: Build
+        shell: pwsh
+        # run: |
+        #   # bin/build.bat
+        #   cd IDE/dist
+        #   Compress-Archive -Path "BeefBuild", "BeefBuild_d.exe", "Beef042RT64.dll", "Beef042RT64_d.dll" -DestinationPath "..\..\${{ matrix.os }}.zip"
+        run: |
+          cd IDE/dist
+          Compress-Archive -Path "notes.txt", "userdict_install.txt" -DestinationPath "..\..\${{ matrix.os }}.zip"
 
   # build-linux:
   #   name: Build on Linux
@@ -44,46 +46,42 @@ jobs:
   #     - name: Build
   #       run: |
   #         bin/build.sh
-  #         mkdir artifacts
+  #         cd IDE/dist
   #         zip ../../${{ matrix.os }}.zip BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a
   #     - name: Upload Artifacts
   #       uses: actions/upload-artifact@v4
   #       with:
   #         name: ${{ matrix.os }}
-  #         path: artifacts
-  #         retention-days: 7
+  #         path: ${{ matrix.os }}.zip
+  #         retention-days: 1
 
-  build-macos:
-    name: Build on macOS
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest, macos-15-intel]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-      # - name: Install Deps
-      #   run: |
-      #     brew update
-      #     brew install llvm@22
-      #     echo "$(brew --prefix llvm@22)/bin" >> $GITHUB_PATH
-      # - name: Build
-      #   run: |
-      #     bin/build.sh
-      #     cd IDE/dist
-      #     zip ../../${{ matrix.os }}.zip BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a
-      - name: Build
-        run: |
-          cd IDE/dist
-          zip ../../${{ matrix.os }}.zip notes.txt
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.os }}
-          path: ${{ matrix.os }}.zip
-          retention-days: 7
+  # build-macos:
+  #   name: Build on macOS
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [macos-latest, macos-15-intel]
+  #   runs-on: ${{ matrix.os }}
+  #   timeout-minutes: 60
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v4
+  #     - name: Install Deps
+  #       run: |
+  #         brew update
+  #         brew install llvm@22
+  #         echo "$(brew --prefix llvm@22)/bin" >> $GITHUB_PATH
+  #     - name: Build
+  #       run: |
+  #         bin/build.sh
+  #         cd IDE/dist
+  #         zip ../../${{ matrix.os }}.zip BeefBuild BeefBuild_d libBeefRT.a libBeefRT_d.a
+  #     - name: Upload Artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: ${{ matrix.os }}
+  #         path: ${{ matrix.os }}.zip
+  #         retention-days: 1
 
   release:
     name: Create release
