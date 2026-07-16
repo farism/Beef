@@ -25,7 +25,12 @@ jobs:
         run: |
           cd IDE/dist
           Compress-Archive -Path "notes.txt", "userdict_install.txt" -DestinationPath "..\..\${{ matrix.os }}.zip"
-
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}
+          path: ${{ matrix.os }}.zip
+          retention-days: 1
   # build-linux:
   #   name: Build on Linux
   #   strategy:
