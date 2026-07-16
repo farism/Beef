@@ -92,10 +92,11 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
       - name: Upload archives to release
         uses: softprops/action-gh-release@v3
         with:
-          files: |
-            macos-latest/*
-            macos-15-intel/*
+          files: artifacts/*
 
