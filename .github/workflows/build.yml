@@ -52,7 +52,7 @@ jobs:
       - name: Build (MacOS)
         if: contains(matrix.os, 'macos')
         run: |
-           zip -r ${{ matrix.os }}.zip libhunspell.dylib
+           zip -r ${{ matrix.os }}.zip IDE/dist/libhunspell.dylib
 
       - name: Build (Windows)
         if: contains(matrix.os, 'windows')
