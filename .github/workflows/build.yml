@@ -59,7 +59,7 @@ jobs:
           zip -r ../${{ matrix.os }}.zip corlib
           cd ../IDE/dist
           sed -i.bak 's/..\/..\/BeefLibs/./g' BeefConfig.toml
-          zip -r ../../${{ matrix.os }}.zip BeefConfig.toml BeefBuild_d libBeefRT.a
+          zip -r ../../${{ matrix.os }}.zip BeefConfig.toml BeefBuild libBeefRT.a
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
