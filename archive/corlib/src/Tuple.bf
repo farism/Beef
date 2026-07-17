@@ -1,5 +1,0 @@
-namespace System;
-
-struct Tuple
-{
-}
