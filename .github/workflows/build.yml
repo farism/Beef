@@ -24,6 +24,7 @@ jobs:
       - name: Build
         shell: pwsh
         run: |
+          bin/build.bat
           Compress-Archive -Update -Path BeefLibs/corlib -DestinationPath ${{ matrix.os }}.zip
           cd IDE/dist
           (Get-Content BeefConfig.toml) -replace '../../BeefLibs', '.' | Set-Content BeefConfig.toml
@@ -96,7 +97,7 @@ jobs:
         with:
           path: artifacts
           merge-multiple: true
-      - name: Upload archives to release
+      - name: Create release and upload artifacts
         uses: softprops/action-gh-release@v3
         with:
           files: artifacts/*
