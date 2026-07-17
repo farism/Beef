@@ -24,14 +24,13 @@ jobs:
   #     - name: Build
   #       shell: pwsh
   #       run: |
-  #         bin/build.bat
   #         Compress-Archive -Update -Path BeefLibs/corlib -DestinationPath ${{ matrix.os }}.zip
   #         cd IDE/dist
   #         (Get-Content BeefConfig.toml) -replace '../../BeefLibs', '.' | Set-Content BeefConfig.toml
   #         Compress-Archive -Update -Path BeefConfig.toml, BeefBuild.exe, Beef042Dbg64.dll, Beef042Dbg64.lib, Beef042RT64.dll, Beef042RT64.lib, BeefySysLib64.dll, BeefySysLib64.lib, IDEHelper64.dll, IDEHelper64.lib -DestinationPath ..\..\${{ matrix.os }}.zip
   #     - name: Upload Artifacts
   #       uses: actions/upload-artifact@v4
-  #       with: &upload_with
+  #       with:
   #         name: ${{ matrix.os }}
   #         path: ${{ matrix.os }}.zip
   #         retention-days: 1
@@ -63,7 +62,10 @@ jobs:
           zip -r ../../${{ matrix.os }}.zip BeefConfig.toml BeefBuild_d libBeefRT.a
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
-        with: *upload_with
+        with:
+          name: ${{ matrix.os }}
+          path: ${{ matrix.os }}.zip
+          retention-days: 1
 
   build-macos:
     name: Build on macOS
@@ -85,12 +87,15 @@ jobs:
         run: *build_archive_linux
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
-        with: *upload_with
+        with:
+          name: ${{ matrix.os }}
+          path: ${{ matrix.os }}.zip
+          retention-days: 1
 
   release:
     name: Create release
     runs-on: ubuntu-latest
-    needs: [build-windows, build-linux, build-macos]
+    needs: [build-linux, build-macos]
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
