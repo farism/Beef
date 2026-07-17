@@ -67,27 +67,27 @@ IDE\dist\BeefBuild_boot -proddir=BeefBuild -config=Debug
 IDE\dist\BeefBuild_d -proddir=BeefBuild -config=Release
 @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
-@ECHO Building IDE_bfd
-@SET STATS_FILE=stats\IDE_Debug_build.csv
-bin\RunWithStats IDE\dist\BeefBuild -proddir=IDE -clean -config=Debug_NoDeps
-IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
+:: @ECHO Building IDE_bfd
+:: @SET STATS_FILE=stats\IDE_Debug_build.csv
+:: bin\RunWithStats IDE\dist\BeefBuild -proddir=IDE -clean -config=Debug_NoDeps
+:: IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
-@ECHO Building IDE_bf
-@SET STATS_FILE=stats\IDE_Release_build.csv
-bin\RunWithStats IDE\dist\BeefBuild -proddir=IDE -clean -config=Release
-IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
+:: @ECHO Building IDE_bf
+:: @SET STATS_FILE=stats\IDE_Release_build.csv
+:: bin\RunWithStats IDE\dist\BeefBuild -proddir=IDE -clean -config=Release
+:: IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
-@ECHO Building RandoCode
-IDE\dist\BeefBuild_d -proddir=BeefTools\RandoCode -config=Release
-@IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
+:: @ECHO Building RandoCode
+:: IDE\dist\BeefBuild_d -proddir=BeefTools\RandoCode -config=Release
+:: @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
-@ECHO Building BeefPerf
-IDE\dist\BeefBuild_d -proddir=BeefTools\BeefPerf -config=Release
-@IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
+:: @ECHO Building BeefPerf
+:: IDE\dist\BeefBuild_d -proddir=BeefTools\BeefPerf -config=Release
+:: @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
-@ECHO Building BeefCon
-IDE\dist\BeefBuild_d -proddir=BeefTools\BeefCon -config=Release
-@IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
+:: @ECHO Building BeefCon
+:: IDE\dist\BeefBuild_d -proddir=BeefTools\BeefCon -config=Release
+:: @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
 :SUCCESS
 @ECHO SUCCESS!
