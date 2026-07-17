@@ -27,8 +27,8 @@ del BeefDep3.zip
 copy BeefLibs\SDL2\dist\SDL2.dll IDE\dist
 @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
-CALL bin/msbuild.bat BeefySysLib\BeefySysLib.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:SolutionDir=%cd%\ /v:m %MSBUILD_FLAGS%
-@IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
+@REM CALL bin/msbuild.bat BeefySysLib\BeefySysLib.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:SolutionDir=%cd%\ /v:m %MSBUILD_FLAGS%
+@REM @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
 CALL bin/msbuild.bat BeefySysLib\BeefySysLib.vcxproj /p:Configuration=Release /p:Platform=x64 /p:SolutionDir=%cd%\ /v:m %MSBUILD_FLAGS%
 @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
@@ -36,8 +36,8 @@ CALL bin/msbuild.bat BeefySysLib\BeefySysLib.vcxproj /p:Configuration=Release /p
 CALL bin/msbuild.bat BeefySysLib\BeefySysLib.vcxproj /p:Configuration="Release Static" /p:Platform=x64 /p:SolutionDir=%cd%\ /v:m %MSBUILD_FLAGS%
 @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
-CALL bin/msbuild.bat IDEHelper\IDEHelper.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:SolutionDir=%cd%\ /v:m %MSBUILD_FLAGS%
-@IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
+@REM CALL bin/msbuild.bat IDEHelper\IDEHelper.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:SolutionDir=%cd%\ /v:m %MSBUILD_FLAGS%
+@REM @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
 CALL bin/msbuild.bat IDEHelper\IDEHelper.vcxproj /p:Configuration=Release /p:Platform=x64 /p:SolutionDir=%cd%\ /v:m %MSBUILD_FLAGS%
 @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
@@ -45,23 +45,23 @@ CALL bin/msbuild.bat IDEHelper\IDEHelper.vcxproj /p:Configuration=Release /p:Pla
 CALL bin/build_rt.bat %1
 @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
-CALL bin/msbuild.bat BeefBoot\BeefBoot.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:SolutionDir=%cd%\ /v:m %MSBUILD_FLAGS%
-@IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
+@REM CALL bin/msbuild.bat BeefBoot\BeefBoot.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:SolutionDir=%cd%\ /v:m %MSBUILD_FLAGS%
+@REM @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
 CALL bin/msbuild.bat BeefBoot\BeefBoot.vcxproj /p:Configuration=Release /p:Platform=x64 /p:SolutionDir=%cd%\ /v:m %MSBUILD_FLAGS%
 @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
-@ECHO Building BeefBuild_bootd
-IDE\dist\BeefBoot_d.exe --out="IDE\dist\BeefBuild_bootd.exe" --src=IDE\src --src=BeefBuild\src --src=BeefLibs\corlib\src --src=BeefLibs\Beefy2D\src --src=BeefLibs\libgit2\src --define=CLI --define=DEBUG --startup=BeefBuild.Program --linkparams="Comdlg32.lib kernel32.lib user32.lib advapi32.lib shell32.lib IDE\dist\Beef042RT64_d.lib IDE\dist\IDEHelper64_d.lib IDE\dist\BeefySysLib64_d.lib"
-@IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
+@REM @ECHO Building BeefBuild_bootd
+@REM IDE\dist\BeefBoot_d.exe --out="IDE\dist\BeefBuild_bootd.exe" --src=IDE\src --src=BeefBuild\src --src=BeefLibs\corlib\src --src=BeefLibs\Beefy2D\src --src=BeefLibs\libgit2\src --define=CLI --define=DEBUG --startup=BeefBuild.Program --linkparams="Comdlg32.lib kernel32.lib user32.lib advapi32.lib shell32.lib IDE\dist\Beef042RT64_d.lib IDE\dist\IDEHelper64_d.lib IDE\dist\BeefySysLib64_d.lib"
+@REM @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
 @ECHO Building BeefBuild_boot
 IDE\dist\BeefBoot.exe --out="IDE\dist\BeefBuild_boot.exe" --src=IDE\src --src=BeefBuild\src --src=BeefLibs\corlib\src --src=BeefLibs\Beefy2D\src --src=BeefLibs\libgit2\src --define=CLI --define=RELEASE --startup=BeefBuild.Program --linkparams="Comdlg32.lib kernel32.lib user32.lib advapi32.lib shell32.lib IDE\dist\Beef042RT64.lib IDE\dist\IDEHelper64.lib IDE\dist\BeefySysLib64.lib"
 @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
-@ECHO Building BeefBuild_d
-IDE\dist\BeefBuild_boot -proddir=BeefBuild -config=Debug
-@IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
+@REM @ECHO Building BeefBuild_d
+@REM IDE\dist\BeefBuild_boot -proddir=BeefBuild -config=Debug
+@REM @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
 @ECHO Building BeefBuild
 IDE\dist\BeefBuild_d -proddir=BeefBuild -config=Release

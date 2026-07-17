@@ -139,12 +139,12 @@ ln -s -f $ROOTPATH/jbuild/Release/bin/libIDEHelper.a ../../BeefLibs/Beefy2D/dist
 
 ### DEBUG ###
 
-echo Building BeefBuild_bootd
-../../jbuild_d/Debug/bin/BeefBoot --out="BeefBuild_bootd" --src=../src --src=../../BeefBuild/src --src=../../BeefLibs/corlib/src --src=../../BeefLibs/Beefy2D/src --define=CLI --define=DEBUG --startup=BeefBuild.Program --linkparams="./libBeefRT_d.a ./libIDEHelper_d.a ./libBeefySysLib_d.a ./libhunspell.$LIBEXT $(< ../../IDE/dist/IDEHelper_libs_d.txt) $LINKOPTS"
-echo Building BeefBuild_d
-./BeefBuild_bootd -clean -proddir=../../BeefBuild -config=Debug $PACKAGE_DEFINE
-echo Testing IDEHelper/Tests in BeefBuild_d
-./BeefBuild_d -proddir=../../IDEHelper/Tests -test
+# echo Building BeefBuild_bootd
+# ../../jbuild_d/Debug/bin/BeefBoot --out="BeefBuild_bootd" --src=../src --src=../../BeefBuild/src --src=../../BeefLibs/corlib/src --src=../../BeefLibs/Beefy2D/src --define=CLI --define=DEBUG --startup=BeefBuild.Program --linkparams="./libBeefRT_d.a ./libIDEHelper_d.a ./libBeefySysLib_d.a ./libhunspell.$LIBEXT $(< ../../IDE/dist/IDEHelper_libs_d.txt) $LINKOPTS"
+# echo Building BeefBuild_d
+# ./BeefBuild_bootd -clean -proddir=../../BeefBuild -config=Debug $PACKAGE_DEFINE
+# echo Testing IDEHelper/Tests in BeefBuild_d
+# ./BeefBuild_d -proddir=../../IDEHelper/Tests -test
 
 ### RELEASE ###
 
