@@ -10,31 +10,31 @@ env:
   GITHUB_TOKEN: ${{ secrets.PAT }}
 
 jobs:
-  build-windows:
-    name: Build on Windows
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, windows-11-arm]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v5
-      - name: Build
-        shell: pwsh
-        run: |
-          bin/build.bat
-          Compress-Archive -Update -Path BeefLibs/corlib -DestinationPath ${{ matrix.os }}.zip
-          cd IDE/dist
-          (Get-Content BeefConfig.toml) -replace '../../BeefLibs', '.' | Set-Content BeefConfig.toml
-          Compress-Archive -Update -Path BeefConfig.toml, BeefBuild.exe, Beef042Dbg64.dll, Beef042Dbg64.lib, Beef042RT64.dll, Beef042RT64.lib, BeefySysLib64.dll, BeefySysLib64.lib, IDEHelper64.dll, IDEHelper64.lib -DestinationPath ..\..\${{ matrix.os }}.zip
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with: &upload_with
-          name: ${{ matrix.os }}
-          path: ${{ matrix.os }}.zip
-          retention-days: 1
+  # build-windows:
+  #   name: Build on Windows
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [windows-latest, windows-11-arm]
+  #   runs-on: ${{ matrix.os }}
+  #   timeout-minutes: 60
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v5
+  #     - name: Build
+  #       shell: pwsh
+  #       run: |
+  #         bin/build.bat
+  #         Compress-Archive -Update -Path BeefLibs/corlib -DestinationPath ${{ matrix.os }}.zip
+  #         cd IDE/dist
+  #         (Get-Content BeefConfig.toml) -replace '../../BeefLibs', '.' | Set-Content BeefConfig.toml
+  #         Compress-Archive -Update -Path BeefConfig.toml, BeefBuild.exe, Beef042Dbg64.dll, Beef042Dbg64.lib, Beef042RT64.dll, Beef042RT64.lib, BeefySysLib64.dll, BeefySysLib64.lib, IDEHelper64.dll, IDEHelper64.lib -DestinationPath ..\..\${{ matrix.os }}.zip
+  #     - name: Upload Artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with: &upload_with
+  #         name: ${{ matrix.os }}
+  #         path: ${{ matrix.os }}.zip
+  #         retention-days: 1
 
   build-linux:
     name: Build on Linux
