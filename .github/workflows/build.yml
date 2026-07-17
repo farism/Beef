@@ -40,7 +40,7 @@ jobs:
       - name: Build (Ubuntu and MacOS)
         if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
         run: |
-          bin/build.sh
+          ./bin/build.sh
           cd BeefLibs
           zip -r ../${{ matrix.os }}.zip corlib
           cd ../IDE/dist
@@ -56,6 +56,7 @@ jobs:
         if: contains(matrix.os, 'windows')
         shell: pwsh
         run: |
+          ./bin/build.bat
           Compress-Archive -Update -Path BeefLibs/corlib -DestinationPath ${{ matrix.os }}.zip
           cd IDE/dist
           (Get-Content BeefConfig.toml) -replace '../../BeefLibs', '.' | Set-Content BeefConfig.toml
