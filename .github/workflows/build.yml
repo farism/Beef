@@ -24,9 +24,10 @@ jobs:
       - name: Build
         shell: pwsh
         run: |
-          bin/build.bat
+          Compress-Archive -Update -Path BeefLibs/corlib -DestinationPath ${{ matrix.os }}.zip
           cd IDE/dist
-          Compress-Archive -Path BeefBuild.exe, Beef042RT64.dll, Beef042Dbg64.dll, Beef042RT32.dll, Beef042Dbg32.dll -DestinationPath ..\..\${{ matrix.os }}.zip
+          (Get-Content BeefConfig.toml) -replace '../../BeefLibs', '.' | Set-Content BeefConfig.toml
+          Compress-Archive -Update -Path BeefConfig.toml, BeefBuild.exe, Beef042Dbg64.dll, Beef042Dbg64.lib, Beef042RT64.dll, Beef042RT64.lib, BeefySysLib64.dll, BeefySysLib64.lib, IDEHelper64.dll, IDEHelper64.lib -DestinationPath ..\..\${{ matrix.os }}.zip
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with: &upload_with
@@ -54,11 +55,11 @@ jobs:
       - name: Build
         run: &build_archive_linux |
           bin/build.sh
-          mkdir archive
-          cp -r BeefLibs/corlib IDE/dist/BeefBuild_d IDE/dist/libBeefRT.a IDE/dist/BeefConfig.toml archive
-          sed -i'' 's/..\/..\/BeefLibs/./g' archive/BeefConfig.toml
-          cd archive
-          zip -r ../${{ matrix.os }}.zip .
+          cd BeefLibs
+          zip -r ../${{ matrix.os }}.zip corlib
+          cd ../IDE/dist
+          sed -i.bak 's/..\/..\/BeefLibs/./g' BeefConfig.toml
+          zip -r ../../${{ matrix.os }}.zip BeefConfig.toml BeefBuild_d libBeefRT.a
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with: *upload_with
@@ -73,7 +74,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install Deps
         run: |
           brew update
@@ -84,7 +85,6 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with: *upload_with
-          
 
   release:
     name: Create release
@@ -100,4 +100,3 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: artifacts/*
-
