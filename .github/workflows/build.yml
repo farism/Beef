@@ -4,30 +4,9 @@ on:
   push:
     tags:
       - '*'
-  workflow_dispatch:
 
 env:
   GITHUB_TOKEN: ${{ secrets.PAT }}
-
-build_archive: 
-  - &build_archive
-    - name: Build
-      run: |
-        bin/build.sh
-        mkdir archive
-        cp -r BeefLibs/corlib IDE/dist/BeefBuild_d IDE/dist/libBeefRT.a IDE/dist/BeefConfig.toml archive
-        sed -i'' 's/..\/..\/BeefLibs/./g' archive/BeefConfig.toml
-        cd archive
-        zip -r ../${{ matrix.os }}.zip .
-
-upload_artifacts: 
-  - &upload_artifacts
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.os }}
-        path: ${{ matrix.os }}.zip
-        retention-days: 1
 
 jobs:
   build-windows:
@@ -38,7 +17,21 @@ jobs:
         os: [windows-latest, windows-11-arm]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
-    steps: *upload_artifacts
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+      - name: Build
+        shell: pwsh
+        run: |
+          bin/build.bat
+          cd IDE/dist
+          Compress-Archive -Path BeefBuild.exe, Beef042RT64.dll, Beef042Dbg64.dll, Beef042RT32.dll, Beef042Dbg32.dll -DestinationPath ..\..\${{ matrix.os }}.zip
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with: &upload_with
+          name: ${{ matrix.os }}
+          path: ${{ matrix.os }}.zip
+          retention-days: 1
 
   build-linux:
     name: Build on Linux
@@ -57,8 +50,17 @@ jobs:
           chmod +x llvm.sh
           sudo ./llvm.sh 22
           sudo apt-get install -y llvm-22-dev
-      *build_archive
-      *upload_artifacts
+      - name: Build
+        run: &build_archive_linux |
+          bin/build.sh
+          mkdir archive
+          cp -r BeefLibs/corlib IDE/dist/BeefBuild_d IDE/dist/libBeefRT.a IDE/dist/BeefConfig.toml archive
+          sed -i'' 's/..\/..\/BeefLibs/./g' archive/BeefConfig.toml
+          cd archive
+          zip -r ../${{ matrix.os }}.zip .
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with: *upload_with
 
   build-macos:
     name: Build on macOS
@@ -76,8 +78,12 @@ jobs:
           brew update
           brew install llvm@22
           echo "$(brew --prefix llvm@22)/bin" >> $GITHUB_PATH
-      <<: *build_archive
-      <<: *upload_artifacts
+      - name: Build
+        run: *build_archive_linux
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with: *upload_with
+          
 
   release:
     name: Create release
