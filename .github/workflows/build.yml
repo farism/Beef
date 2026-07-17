@@ -15,7 +15,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, windows-11-arm, ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
+        # os: [windows-latest, windows-11-arm, ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
+        os: [macos-latest, macos-15-intel]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     steps:
@@ -50,7 +51,8 @@ jobs:
       - name: Build (MacOS)
         if: contains(matrix.os, 'macos')
         run: |
-           zip -r ${{ matrix.os }}.zip IDE/dist/libhunspell.dylib
+          cd IDE/dist
+          zip -r ../../${{ matrix.os }}.zip libhunspell.dylib
 
       - name: Build (Windows)
         if: contains(matrix.os, 'windows')
