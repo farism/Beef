@@ -10,36 +10,12 @@ env:
   GITHUB_TOKEN: ${{ secrets.PAT }}
 
 jobs:
-  # build-windows:
-  #   name: Build on Windows
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       os: [windows-latest, windows-11-arm]
-  #   runs-on: ${{ matrix.os }}
-  #   timeout-minutes: 60
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v5
-  #     - name: Build
-  #       shell: pwsh
-  #       run: |
-  #         Compress-Archive -Update -Path BeefLibs/corlib -DestinationPath ${{ matrix.os }}.zip
-  #         cd IDE/dist
-  #         (Get-Content BeefConfig.toml) -replace '../../BeefLibs', '.' | Set-Content BeefConfig.toml
-  #         Compress-Archive -Update -Path BeefConfig.toml, BeefBuild.exe, Beef042Dbg64.dll, Beef042Dbg64.lib, Beef042RT64.dll, Beef042RT64.lib, BeefySysLib64.dll, BeefySysLib64.lib, IDEHelper64.dll, IDEHelper64.lib -DestinationPath ..\..\${{ matrix.os }}.zip
-  #     - name: Upload Artifacts
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: ${{ matrix.os }}
-  #         path: ${{ matrix.os }}.zip
-  #         retention-days: 1
-
   build:
     name: Build
     strategy:
       fail-fast: false
       matrix:
+        # os: [windows-latest, windows-11-arm, ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
         os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
@@ -71,6 +47,15 @@ jobs:
           cd ../IDE/dist
           sed -i.bak 's/..\/..\/BeefLibs/./g' BeefConfig.toml
           zip -r ../../${{ matrix.os }}.zip BeefConfig.toml BeefBuild libBeefRT.a
+
+      - name: Build (Windows)
+        if: contains(matrix.os, 'windows')
+        shell: pwsh
+        run: |
+          Compress-Archive -Update -Path BeefLibs/corlib -DestinationPath ${{ matrix.os }}.zip
+          cd IDE/dist
+          (Get-Content BeefConfig.toml) -replace '../../BeefLibs', '.' | Set-Content BeefConfig.toml
+          Compress-Archive -Update -Path BeefConfig.toml, BeefBuild.exe, Beef042Dbg64.dll, Beef042Dbg64.lib, Beef042RT64.dll, Beef042RT64.lib, BeefySysLib64.dll, BeefySysLib64.lib, IDEHelper64.dll, IDEHelper64.lib -DestinationPath ..\..\${{ matrix.os }}.zip      
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
