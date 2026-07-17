@@ -1,0 +1,7 @@
+FileVersion = 1
+
+[Workspace]
+StartupProject = "SpaceGame"
+
+[Projects]
+SpaceGame = {Path = "."}
