@@ -59,9 +59,9 @@ CALL bin/msbuild.bat BeefBoot\BeefBoot.vcxproj /p:Configuration=Release /p:Platf
 IDE\dist\BeefBoot.exe --out="IDE\dist\BeefBuild_boot.exe" --src=IDE\src --src=BeefBuild\src --src=BeefLibs\corlib\src --src=BeefLibs\Beefy2D\src --src=BeefLibs\libgit2\src --define=CLI --define=RELEASE --startup=BeefBuild.Program --linkparams="Comdlg32.lib kernel32.lib user32.lib advapi32.lib shell32.lib IDE\dist\Beef042RT64.lib IDE\dist\IDEHelper64.lib IDE\dist\BeefySysLib64.lib"
 @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
-@REM @ECHO Building BeefBuild_d
-@REM IDE\dist\BeefBuild_boot -proddir=BeefBuild -config=Debug
-@REM @IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
+@ECHO Building BeefBuild_d
+IDE\dist\BeefBuild_boot -proddir=BeefBuild -config=Debug
+@IF %ERRORLEVEL% NEQ 0 GOTO HADERROR
 
 @ECHO Building BeefBuild
 IDE\dist\BeefBuild_d -proddir=BeefBuild -config=Release
